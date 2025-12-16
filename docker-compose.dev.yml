@@ -1,0 +1,39 @@
+version: '3.8'
+
+# Development docker-compose (only services, not apps)
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: homedepot-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: homedepot_deals
+    volumes:
+      - mongodb_dev_data:/data/db
+    networks:
+      - homedepot-network-dev
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: homedepot-redis-dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - homedepot-network-dev
+    command: redis-server --appendonly yes
+
+networks:
+  homedepot-network-dev:
+    driver: bridge
+
+volumes:
+  mongodb_dev_data:
+  redis_dev_data:
+

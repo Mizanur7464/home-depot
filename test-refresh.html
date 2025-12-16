@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Data Refresh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background: #e31837;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #c0142f;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Refresh Test</h1>
+    <p>Click the button below to trigger data refresh:</p>
+    <button onclick="triggerRefresh()">🔄 Refresh Data</button>
+    <div id="result" class="result"></div>
+
+    <script>
+        async function triggerRefresh() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = '⏳ Refreshing data...';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/refresh', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Success!</strong><br>
+                        ${data.message}<br>
+                        <small>Timestamp: ${new Date(data.timestamp).toLocaleString()}</small>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Error:</strong><br>
+                        ${data.error || 'Unknown error'}
+                    `;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Connection Error:</strong><br>
+                    ${error.message}<br>
+                    <small>Make sure the server is running on port 3001</small>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
+
