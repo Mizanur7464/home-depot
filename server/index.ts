@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import { connectDB } from './db/connection';
 import { connectRedis } from './db/redis';
 import { dealsRouter } from './routes/deals';
@@ -10,7 +11,7 @@ import { DataRefreshJob } from './jobs/dataRefresh';
 
 // Load environment variables based on NODE_ENV
 if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: '.env.production' });
+  dotenv.config({ path: path.resolve(process.cwd(), '.env.production') });
 } else {
   dotenv.config();
 }
