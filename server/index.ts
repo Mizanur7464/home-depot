@@ -8,7 +8,12 @@ import { authRouter } from './routes/auth';
 import { adminRouter } from './routes/admin';
 import { DataRefreshJob } from './jobs/dataRefresh';
 
-dotenv.config();
+// Load environment variables based on NODE_ENV
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: '.env.production' });
+} else {
+  dotenv.config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
