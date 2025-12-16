@@ -3,8 +3,8 @@ module.exports = {
   apps: [
     {
       name: 'homedepot-backend',
-      script: 'tsx',
-      args: 'server/index.ts',
+      script: 'npx',
+      args: 'tsx server/index.ts',
       instances: 1,
       exec_mode: 'fork',
       watch: false,
