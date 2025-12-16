@@ -583,8 +583,8 @@ export class DataFetcher {
       store_locations: rawData.storeLocations || rawData.store_locations || [],
       is_featured: false,
       source: 'api' as 'api' | 'scraper',
-      last_updated: new Date().toISOString(),
-      created_at: new Date().toISOString(),
+      last_updated: new Date(),
+      created_at: new Date(),
     };
     
     console.log(`   - Normalized deal:`, {
